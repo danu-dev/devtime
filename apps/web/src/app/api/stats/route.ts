@@ -1,11 +1,22 @@
 import { NextResponse } from "next/server";
 import { StatsService } from "@/server/services/stats.service";
+import { AuthService } from "@/server/services/auth.service";
 import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
   try {
-    const cookieStore = await cookies();
-    const userId = cookieStore.get("userId")?.value;
+    const authHeader = req.headers.get("Authorization") || req.headers.get("authorization");
+    let userId: string | undefined;
+
+    if (authHeader) {
+      const user = await AuthService.authenticateApiKey(authHeader);
+      if (user) userId = user.id;
+    }
+
+    if (!userId) {
+      const cookieStore = await cookies();
+      userId = cookieStore.get("userId")?.value;
+    }
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

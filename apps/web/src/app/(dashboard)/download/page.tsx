@@ -5,14 +5,15 @@ import { useLanguage } from "@/lib/LanguageContext";
 
 const RELEASES = [
   {
-    version: "v0.1.1",
-    name: "DevTime VS Code Extension 0.1.1 (Stable)",
+    version: "v0.1.2",
+    name: "DevTime VS Code Extension 0.1.2 (Latest & Fixed)",
     date: "Sep 2026",
-    fileName: "devtime-vscode-0.1.1.vsix",
-    downloadUrl: "/downloads/devtime-vscode-0.1.1.vsix",
+    fileName: "devtime-vscode-0.1.2.vsix",
+    downloadUrl: "/downloads/devtime-vscode-0.1.2.vsix",
     isLatest: true,
     size: "70 KB",
     changes: [
+      "Fix sync status bar dan durasi coding realtime via API Key",
       "Auto-migration setting apiUrl localhost ke production endpoint Vercel",
       "Default cloud endpoint: https://wakatime-devtime.vercel.app",
       "Pelacakan heartbeat coding otomatis berbasis keystroke & buffer focus",
@@ -118,7 +119,7 @@ export default function DownloadPage() {
             <div className="p-2.5 bg-black border border-neutral-800 rounded font-mono text-xs text-neutral-300">
               Extensions: Install from VSIX...
             </div>
-            <p className="text-xs text-neutral-500">Pilih file devtime-vscode-0.1.1.vsix</p>
+            <p className="text-xs text-neutral-500">Pilih file devtime-vscode-0.1.2.vsix</p>
           </div>
 
           <div className="p-4 border border-neutral-800 rounded-lg bg-neutral-950 space-y-3">

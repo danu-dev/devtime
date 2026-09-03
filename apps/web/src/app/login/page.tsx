@@ -159,7 +159,7 @@ export default function AuthPage() {
           <div className="text-[11px] text-neutral-500">{t.downloadSubtitle}</div>
         </div>
         <a
-          href="/downloads/devtime-vscode-0.1.1.vsix"
+          href="/downloads/devtime-vscode-0.1.2.vsix"
           download
           className="flex items-center gap-1.5 px-3 py-1.5 bg-neutral-900 hover:bg-neutral-800 text-white rounded border border-neutral-800 text-xs font-medium transition-colors"
         >

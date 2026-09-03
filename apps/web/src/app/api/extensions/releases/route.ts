@@ -12,11 +12,12 @@ export interface ExtensionRelease {
 
 const RELEASES: ExtensionRelease[] = [
   {
-    version: "v0.1.1",
+    version: "v0.1.2",
     releaseDate: "2026-09-03",
-    fileName: "devtime-vscode-0.1.1.vsix",
-    downloadUrl: "/downloads/devtime-vscode-0.1.1.vsix",
+    fileName: "devtime-vscode-0.1.2.vsix",
+    downloadUrl: "/downloads/devtime-vscode-0.1.2.vsix",
     changelog: [
+      "Fix sync status bar dan durasi coding realtime via API Key",
       "Auto-migration setting apiUrl localhost ke production endpoint Vercel",
       "Default cloud endpoint: https://wakatime-devtime.vercel.app",
       "Real-time keystroke and active file heartbeat tracker",
