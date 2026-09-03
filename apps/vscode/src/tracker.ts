@@ -6,6 +6,7 @@ import { GitDetector } from "./git";
 import { HeartbeatQueue, HeartbeatPayload } from "./queue";
 import { DevTimeClient } from "./client";
 import { resolveLanguage } from "./languages";
+import { DevTimeLogger } from "./logger";
 
 export class TrackerService {
   private lastHeartbeatTime: number = 0;
@@ -14,6 +15,8 @@ export class TrackerService {
   private queue: HeartbeatQueue;
 
   constructor(private context: vscode.ExtensionContext) {
+    DevTimeLogger.init();
+    DevTimeLogger.log("DevTime Tracker extension activating...");
     this.queue = new HeartbeatQueue(context);
     this.statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
     this.statusBarItem.command = "devtime.showStatus";
@@ -23,10 +26,15 @@ export class TrackerService {
     context.subscriptions.push(this.statusBarItem);
     this.registerCommands();
     this.registerListeners();
+    this.triggerHeartbeat(true);
   }
 
   private registerCommands(): void {
     this.context.subscriptions.push(
+      vscode.commands.registerCommand("devtime.showLogs", () => {
+        DevTimeLogger.show();
+      }),
+
       vscode.commands.registerCommand("devtime.setApiKey", async () => {
         const key = await vscode.window.showInputBox({
           prompt: "Enter your DevTime API Key",
@@ -37,6 +45,7 @@ export class TrackerService {
         if (key) {
           await vscode.workspace.getConfiguration("devtime").update("apiKey", key.trim(), true);
           vscode.window.showInformationMessage("DevTime: API Key saved successfully.");
+          DevTimeLogger.log("New API Key saved.");
           this.triggerHeartbeat(true);
         }
       }),
@@ -51,6 +60,8 @@ export class TrackerService {
         if (url) {
           await vscode.workspace.getConfiguration("devtime").update("apiUrl", url.trim(), true);
           vscode.window.showInformationMessage(`DevTime: API URL set to ${url}`);
+          DevTimeLogger.log(`API URL updated to: ${url}`);
+          this.triggerHeartbeat(true);
         }
       }),
 
@@ -69,6 +80,7 @@ export class TrackerService {
             `Endpoint: ${apiUrl}`,
             `Offline Queue: ${queueSize} pending heartbeats`,
             "DevTime: Send Test Heartbeat",
+            "DevTime: Show Debug Output Logs",
             "DevTime: Set API Key",
             "DevTime: Set API URL",
             "DevTime: Open Web Dashboard",
@@ -78,7 +90,9 @@ export class TrackerService {
 
         if (action === "DevTime: Send Test Heartbeat") {
           await this.triggerHeartbeat(true);
-          vscode.window.showInformationMessage("DevTime: Test heartbeat sent.");
+          vscode.window.showInformationMessage("DevTime: Test heartbeat triggered.");
+        } else if (action === "DevTime: Show Debug Output Logs") {
+          DevTimeLogger.show();
         } else if (action === "DevTime: Set API Key") {
           vscode.commands.executeCommand("devtime.setApiKey");
         } else if (action === "DevTime: Set API URL") {

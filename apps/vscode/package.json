@@ -2,7 +2,7 @@
   "name": "devtime-vscode",
   "displayName": "DevTime",
   "description": "Open source coding activity tracker",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "devtime",
   "engines": {
     "vscode": "^1.80.0"

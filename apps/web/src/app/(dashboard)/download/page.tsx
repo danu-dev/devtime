@@ -5,21 +5,34 @@ import { useLanguage } from "@/lib/LanguageContext";
 
 const RELEASES = [
   {
-    version: "v0.1.2",
-    name: "DevTime VS Code Extension 0.1.2 (Latest Cloud Edition)",
+    version: "v0.1.3",
+    name: "DevTime VS Code Extension 0.1.3 (Production Fixed)",
     date: "Sep 2026",
-    fileName: "devtime-vscode-0.1.2.vsix",
-    downloadUrl: "/downloads/devtime-vscode-0.1.2.vsix",
-    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    fileName: "devtime-vscode-0.1.3.vsix",
+    downloadUrl: "/downloads/devtime-vscode-0.1.3.vsix",
+    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.3",
     isLatest: true,
     size: "70 KB",
     changes: [
-      "Fix sync status bar dan durasi coding realtime via API Key",
+      "Auto chunking batch upload untuk offline queue ribuan heartbeats",
+      "Perluasan payload schema max heartbeats dari 100 ke 5000",
+      "Fitur DevTime: Show Debug Output Logs di VS Code",
       "Auto-migration setting apiUrl localhost ke production endpoint Vercel",
-      "Default cloud endpoint: https://wakatime-devtime.vercel.app",
       "Pelacakan heartbeat coding otomatis berbasis keystroke & buffer focus",
-      "Auto-detect framework (Next.js, Vite, React, Vue, Express, Nest, Prisma)",
-      "Offline sync queue (data tetap tersimpan jika internet offline)",
+    ],
+  },
+  {
+    version: "v0.1.2",
+    name: "DevTime VS Code Extension 0.1.2",
+    date: "Sep 2026",
+    fileName: "devtime-vscode-0.1.2.vsix",
+    downloadUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    isLatest: false,
+    size: "70 KB",
+    changes: [
+      "Fix sync status bar dan durasi coding realtime via API Key",
+      "Default cloud endpoint integration",
     ],
   },
   {
@@ -33,21 +46,6 @@ const RELEASES = [
     size: "70 KB",
     changes: [
       "Perubahan setting default apiUrl ke cloud",
-      "Peningkatan stabilitas koneksi Axios client",
-    ],
-  },
-  {
-    version: "v0.1.0",
-    name: "DevTime VS Code Extension 0.1.0 (Initial Beta)",
-    date: "Agu 2026",
-    fileName: "devtime-vscode-0.1.0.vsix",
-    downloadUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
-    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
-    isLatest: false,
-    size: "35 KB",
-    changes: [
-      "Rilis perdana pelacakan heartbeat di VS Code",
-      "Dukungan offline queue storage lokal",
     ],
   },
 ];
@@ -157,7 +155,7 @@ export default function DownloadPage() {
             <div className="p-2.5 bg-black border border-neutral-800 rounded font-mono text-xs text-neutral-300">
               Extensions: Install from VSIX...
             </div>
-            <p className="text-xs text-neutral-500">Pilih file devtime-vscode-0.1.2.vsix</p>
+            <p className="text-xs text-neutral-500">Pilih file devtime-vscode-0.1.3.vsix</p>
           </div>
 
           <div className="p-4 border border-neutral-800 rounded-lg bg-neutral-950 space-y-3">

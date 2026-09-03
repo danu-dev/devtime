@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import axios from "axios";
 import { HeartbeatQueue } from "./queue";
+import { DevTimeLogger } from "./logger";
 
 export class DevTimeClient {
   static async flush(queue: HeartbeatQueue, statusBar: vscode.StatusBarItem): Promise<void> {
@@ -15,30 +16,38 @@ export class DevTimeClient {
     }
     apiUrl = apiUrl.trim().replace(/\/+$/, "");
 
+    DevTimeLogger.log(`Flushing ${items.length} heartbeats to ${apiUrl}...`);
+
     if (!apiKey) {
+      DevTimeLogger.error("API Key not configured. Skipping heartbeat flush.");
       statusBar.text = "$(stop) DevTime: No Key";
       statusBar.tooltip = "Click to set your DevTime API Key";
       return;
     }
 
     try {
-      const response = await axios.post(
-        `${apiUrl}/api/heartbeats`,
-        { heartbeats: items },
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-          timeout: 5000,
-        }
-      );
-
-      if (response.status === 200) {
-        queue.clear();
-        await this.updateTodayDuration(apiUrl, apiKey, statusBar);
+      // Send in batches of 500 to avoid payload size/timeout limits
+      const batchSize = 500;
+      for (let i = 0; i < items.length; i += batchSize) {
+        const batch = items.slice(i, i + batchSize);
+        await axios.post(
+          `${apiUrl}/api/heartbeats`,
+          { heartbeats: batch },
+          {
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              "Content-Type": "application/json",
+            },
+            timeout: 15000,
+          }
+        );
       }
+
+      DevTimeLogger.log(`Successfully sent ${items.length} heartbeats to server.`);
+      queue.clear();
+      await this.updateTodayDuration(apiUrl, apiKey, statusBar);
     } catch (err: any) {
+      DevTimeLogger.error(`Failed to send heartbeats:`, err);
       const status = err.response?.status;
       const data = err.response?.data;
 
@@ -60,7 +69,7 @@ export class DevTimeClient {
     try {
       const res = await axios.get(`${apiUrl}/api/stats?range=today`, {
         headers: { Authorization: `Bearer ${apiKey}` },
-        timeout: 4000,
+        timeout: 6000,
       });
 
       if (res.data?.totalSeconds !== undefined) {
@@ -71,10 +80,12 @@ export class DevTimeClient {
 
         statusBar.text = `$(clock) DevTime: ${timeStr}`;
         statusBar.tooltip = `DevTime Active • Today's Time: ${timeStr} • Click for status`;
+        DevTimeLogger.log(`Updated today duration: ${timeStr}`);
       } else {
         statusBar.text = "$(check) DevTime: Active";
       }
-    } catch {
+    } catch (err: any) {
+      DevTimeLogger.error(`Failed to fetch today stats:`, err);
       statusBar.text = "$(check) DevTime: Active";
     }
   }

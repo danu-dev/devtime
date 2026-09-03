@@ -14,7 +14,7 @@ export const heartbeatSchema = z.object({
 });
 
 export const heartbeatsPayloadSchema = z.object({
-  heartbeats: z.array(heartbeatSchema).min(1).max(100),
+  heartbeats: z.array(heartbeatSchema).min(1).max(5000),
 });
 
 export type HeartbeatInput = z.infer<typeof heartbeatSchema>;
