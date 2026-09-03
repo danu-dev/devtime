@@ -4,6 +4,7 @@
   "description": "Open source coding activity tracker",
   "version": "0.1.3",
   "publisher": "devtime",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.80.0"
   },
