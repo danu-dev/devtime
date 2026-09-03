@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "cd ../vscode && npx @vscode/vsce package --no-dependencies -o ../web/public/downloads/devtime-vscode-0.1.0.vsix && cd ../web && prisma generate && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "prisma": "prisma"
