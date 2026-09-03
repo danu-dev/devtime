@@ -69,18 +69,18 @@ export class DetailedStatsService {
       orderBy: { activityAt: "asc" },
     });
 
-    const byProject = raw.reduce<Record<string, ProjectGroup>>((acc, curr: { project: string | null; activityAt: Date; language: string | null; entity: string; framework: string | null }) => {
+    const byProject: Record<string, ProjectGroup> = {};
+    for (const curr of raw) {
       const p = this.sanitizeProject(curr.project);
-      if (!acc[p]) {
-        acc[p] = { heartbeats: [], languages: new Set<string>(), frameworks: new Set<string>(), lastActive: curr.activityAt };
+      if (!byProject[p]) {
+        byProject[p] = { heartbeats: [], languages: new Set<string>(), frameworks: new Set<string>(), lastActive: curr.activityAt };
       }
-      acc[p].heartbeats.push({ timestamp: Math.floor(curr.activityAt.getTime() / 1000) });
+      byProject[p].heartbeats.push({ timestamp: Math.floor(curr.activityAt.getTime() / 1000) });
       const lang = this.sanitizeLanguage(curr.language, curr.entity);
-      acc[p].languages.add(lang);
-      if (curr.framework && curr.framework !== "Unknown") acc[p].frameworks.add(curr.framework);
-      if (curr.activityAt > acc[p].lastActive) acc[p].lastActive = curr.activityAt;
-      return acc;
-    }, {});
+      byProject[p].languages.add(lang);
+      if (curr.framework && curr.framework !== "Unknown") byProject[p].frameworks.add(curr.framework);
+      if (curr.activityAt > byProject[p].lastActive) byProject[p].lastActive = curr.activityAt;
+    }
 
     return Object.entries(byProject).map(([name, data]) => {
       let totalSeconds = 0;
@@ -104,16 +104,16 @@ export class DetailedStatsService {
       orderBy: { activityAt: "asc" },
     });
 
-    const byLang = raw.reduce<Record<string, LanguageGroup>>((acc, curr: { language: string | null; entity: string; activityAt: Date; project: string | null }) => {
+    const byLang: Record<string, LanguageGroup> = {};
+    for (const curr of raw) {
       const l = this.sanitizeLanguage(curr.language, curr.entity);
-      if (!acc[l]) {
-        acc[l] = { heartbeats: [], projects: new Set<string>() };
+      if (!byLang[l]) {
+        byLang[l] = { heartbeats: [], projects: new Set<string>() };
       }
-      acc[l].heartbeats.push({ timestamp: Math.floor(curr.activityAt.getTime() / 1000) });
+      byLang[l].heartbeats.push({ timestamp: Math.floor(curr.activityAt.getTime() / 1000) });
       const proj = this.sanitizeProject(curr.project);
-      acc[l].projects.add(proj);
-      return acc;
-    }, {});
+      byLang[l].projects.add(proj);
+    }
 
     let grandTotal = 0;
     const list = Object.entries(byLang).map(([name, data]) => {
