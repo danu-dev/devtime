@@ -5,21 +5,28 @@ export function middleware(req: NextRequest) {
   const userId = req.cookies.get("userId")?.value;
   const pathname = req.nextUrl.pathname;
 
-  // Protected dashboard routes
-  const isDashboard =
-    pathname === "/" ||
-    pathname.startsWith("/overview") ||
-    pathname.startsWith("/activity") ||
-    pathname.startsWith("/projects") ||
-    pathname.startsWith("/languages") ||
-    pathname.startsWith("/settings") ||
-    pathname.startsWith("/download");
+  // Ignore static assets & API routes
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/downloads") ||
+    pathname.includes(".")
+  ) {
+    return NextResponse.next();
+  }
 
-  if (isDashboard && !userId) {
+  // Jika sudah login dan mencoba buka /login, lempar ke /overview
+  if (pathname === "/login" && userId) {
+    return NextResponse.redirect(new URL("/overview", req.url));
+  }
+
+  // Jika belum login dan buka halaman selain /login, lempar ke /login
+  if (pathname !== "/login" && !userId) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  if (pathname === "/login" && userId) {
+  // Jika sudah login dan buka root (/), lempar ke /overview
+  if (pathname === "/" && userId) {
     return NextResponse.redirect(new URL("/overview", req.url));
   }
 
@@ -27,14 +34,5 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/overview/:path*",
-    "/activity/:path*",
-    "/projects/:path*",
-    "/languages/:path*",
-    "/settings/:path*",
-    "/download/:path*",
-    "/login",
-  ],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
