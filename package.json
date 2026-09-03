@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "npm --workspace=@devtime/web run dev",
     "build": "npm --workspace=@devtime/web run build",
+    "vercel-build": "npm --workspace=@devtime/web exec prisma generate && npm --workspace=@devtime/web run build",
     "lint": "npm --workspace=@devtime/web run lint",
     "test": "npm --workspace=@devtime/shared run test",
     "db:generate": "npm --workspace=@devtime/web exec prisma generate",

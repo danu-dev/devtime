@@ -1,0 +1,6 @@
+{
+  "buildCommand": "npm --workspace=@devtime/web exec prisma generate && npm --workspace=@devtime/web run build",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "outputDirectory": "apps/web/.next"
+}
