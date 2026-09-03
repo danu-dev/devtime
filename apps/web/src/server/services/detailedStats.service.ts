@@ -1,6 +1,18 @@
 import { prisma } from "@/lib/db";
 import { groupHeartbeatsIntoSessions } from "@devtime/shared";
 
+type ProjectGroup = {
+  heartbeats: { timestamp: number }[];
+  languages: Set<string>;
+  frameworks: Set<string>;
+  lastActive: Date;
+};
+
+type LanguageGroup = {
+  heartbeats: { timestamp: number }[];
+  projects: Set<string>;
+};
+
 export class DetailedStatsService {
   private static sanitizeLanguage(lang?: string | null, entity?: string): string {
     if (!lang || lang.toLowerCase() === "unknown" || lang.toLowerCase() === "plaintext" || lang.toLowerCase() === "ignore") {
@@ -35,11 +47,11 @@ export class DetailedStatsService {
     });
 
     const sessions = groupHeartbeatsIntoSessions(
-      raw.map((h) => ({ timestamp: Math.floor(h.activityAt.getTime() / 1000) }))
+      raw.map((h: { activityAt: Date }) => ({ timestamp: Math.floor(h.activityAt.getTime() / 1000) }))
     );
 
     return {
-      heartbeats: raw.map((h) => ({
+      heartbeats: raw.map((h: { id: string; entity: string; project: string | null; language: string | null; framework: string | null; activityAt: Date }) => ({
         id: h.id,
         entity: h.entity,
         project: this.sanitizeProject(h.project),
@@ -57,7 +69,7 @@ export class DetailedStatsService {
       orderBy: { activityAt: "asc" },
     });
 
-    const byProject = raw.reduce((acc, curr) => {
+    const byProject = raw.reduce<Record<string, ProjectGroup>>((acc, curr: { project: string | null; activityAt: Date; language: string | null; entity: string; framework: string | null }) => {
       const p = this.sanitizeProject(curr.project);
       if (!acc[p]) {
         acc[p] = { heartbeats: [], languages: new Set<string>(), frameworks: new Set<string>(), lastActive: curr.activityAt };
@@ -68,7 +80,7 @@ export class DetailedStatsService {
       if (curr.framework && curr.framework !== "Unknown") acc[p].frameworks.add(curr.framework);
       if (curr.activityAt > acc[p].lastActive) acc[p].lastActive = curr.activityAt;
       return acc;
-    }, {} as Record<string, { heartbeats: { timestamp: number }[]; languages: Set<string>; frameworks: Set<string>; lastActive: Date }>);
+    }, {});
 
     return Object.entries(byProject).map(([name, data]) => {
       let totalSeconds = 0;
@@ -92,7 +104,7 @@ export class DetailedStatsService {
       orderBy: { activityAt: "asc" },
     });
 
-    const byLang = raw.reduce((acc, curr) => {
+    const byLang = raw.reduce<Record<string, LanguageGroup>>((acc, curr: { language: string | null; entity: string; activityAt: Date; project: string | null }) => {
       const l = this.sanitizeLanguage(curr.language, curr.entity);
       if (!acc[l]) {
         acc[l] = { heartbeats: [], projects: new Set<string>() };
@@ -101,7 +113,7 @@ export class DetailedStatsService {
       const proj = this.sanitizeProject(curr.project);
       acc[l].projects.add(proj);
       return acc;
-    }, {} as Record<string, { heartbeats: { timestamp: number }[]; projects: Set<string> }>);
+    }, {});
 
     let grandTotal = 0;
     const list = Object.entries(byLang).map(([name, data]) => {

@@ -7,7 +7,7 @@ export class StatsService {
     const startDate = this.resolveStartDate(range);
     const rawHeartbeats = await HeartbeatRepository.getByDateRange(userId, startDate);
 
-    const mapped = rawHeartbeats.map((h) => {
+    const mapped = rawHeartbeats.map((h: { language: string | null; entity: string; activityAt: Date; project: string | null; framework: string | null }) => {
       let lang = h.language || "General File";
       if (lang === "typescript" || lang === "TypeScript") lang = "TypeScript";
       else if (lang === "javascript" || lang === "JavaScript") lang = "JavaScript";
@@ -55,13 +55,13 @@ export class StatsService {
     items: Array<{ timestamp: number; language?: string | null; project?: string | null; framework?: string | null }>,
     key: "language" | "project" | "framework"
   ): ItemStat[] {
-    const groups = items.reduce((acc, curr) => {
+    const groups = items.reduce<Record<string, Array<{ timestamp: number }>>>((acc, curr) => {
       const val = curr[key];
       if (!val) return acc;
       if (!acc[val]) acc[val] = [];
       acc[val].push({ timestamp: curr.timestamp });
       return acc;
-    }, {} as Record<string, Array<{ timestamp: number }>>);
+    }, {});
 
     return Object.entries(groups)
       .map(([name, hbs]) => ({
