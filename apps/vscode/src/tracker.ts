@@ -57,13 +57,16 @@ export class TrackerService {
       vscode.commands.registerCommand("devtime.showStatus", async () => {
         const config = vscode.workspace.getConfiguration("devtime");
         const apiKey = config.get<string>("apiKey");
-        const apiUrl = config.get<string>("apiUrl");
+        let apiUrl = config.get<string>("apiUrl");
+        if (!apiUrl || apiUrl.includes("localhost:3000")) {
+          apiUrl = "https://wakatime-devtime.vercel.app";
+        }
         const queueSize = this.queue.size;
 
         const action = await vscode.window.showQuickPick(
           [
             `Status: ${apiKey ? "Configured" : "No API Key"}`,
-            `Endpoint: ${apiUrl || "https://wakatime-devtime.vercel.app"}`,
+            `Endpoint: ${apiUrl}`,
             `Offline Queue: ${queueSize} pending heartbeats`,
             "DevTime: Send Test Heartbeat",
             "DevTime: Set API Key",
@@ -81,7 +84,7 @@ export class TrackerService {
         } else if (action === "DevTime: Set API URL") {
           vscode.commands.executeCommand("devtime.setApiUrl");
         } else if (action === "DevTime: Open Web Dashboard") {
-          vscode.env.openExternal(vscode.Uri.parse(apiUrl || "https://wakatime-devtime.vercel.app"));
+          vscode.env.openExternal(vscode.Uri.parse(apiUrl));
         }
       }),
 

@@ -5,18 +5,19 @@ import { useLanguage } from "@/lib/LanguageContext";
 
 const RELEASES = [
   {
-    version: "v0.1.0",
-    name: "DevTime VS Code Extension 0.1.0 (Stable)",
+    version: "v0.1.1",
+    name: "DevTime VS Code Extension 0.1.1 (Stable)",
     date: "Sep 2026",
-    fileName: "devtime-vscode-0.1.0.vsix",
-    downloadUrl: "/downloads/devtime-vscode-0.1.0.vsix",
+    fileName: "devtime-vscode-0.1.1.vsix",
+    downloadUrl: "/downloads/devtime-vscode-0.1.1.vsix",
     isLatest: true,
-    size: "35 KB",
+    size: "70 KB",
     changes: [
+      "Auto-migration setting apiUrl localhost ke production endpoint Vercel",
+      "Default cloud endpoint: https://wakatime-devtime.vercel.app",
       "Pelacakan heartbeat coding otomatis berbasis keystroke & buffer focus",
       "Auto-detect framework (Next.js, Vite, React, Vue, Express, Nest, Prisma)",
       "Offline sync queue (data tetap tersimpan jika internet offline)",
-      "Branch & repository Git detector",
     ],
   },
 ];
@@ -103,21 +104,21 @@ export default function DownloadPage() {
           {t.howToInstall}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 border border-neutral-800 rounded-lg bg-neutral-950 space-y-3">
             <div className="flex items-center gap-2 text-white font-medium text-xs">
               <span className="w-5 h-5 rounded-full bg-neutral-900 border border-neutral-700 flex items-center justify-center font-mono text-[11px]">
                 1
               </span>
-              {t.step1Title}
+              Install Extension
             </div>
             <p className="text-xs text-neutral-400 leading-relaxed">
-              {t.step1Desc}
+              Buka VS Code, tekan Ctrl+Shift+P lalu pilih:
             </p>
             <div className="p-2.5 bg-black border border-neutral-800 rounded font-mono text-xs text-neutral-300">
               Extensions: Install from VSIX...
             </div>
-            <p className="text-xs text-neutral-500">{t.step1Sub}</p>
+            <p className="text-xs text-neutral-500">Pilih file devtime-vscode-0.1.1.vsix</p>
           </div>
 
           <div className="p-4 border border-neutral-800 rounded-lg bg-neutral-950 space-y-3">
@@ -125,15 +126,31 @@ export default function DownloadPage() {
               <span className="w-5 h-5 rounded-full bg-neutral-900 border border-neutral-700 flex items-center justify-center font-mono text-[11px]">
                 2
               </span>
-              {t.step2Title}
+              Set API Key
             </div>
             <p className="text-xs text-neutral-400 leading-relaxed">
-              {t.step2Desc}
+              Tekan Ctrl+Shift+P di VS Code lalu masukkan API Key Anda:
             </p>
             <div className="p-2.5 bg-black border border-neutral-800 rounded font-mono text-xs text-neutral-300">
               DevTime: Set API Key
             </div>
-            <p className="text-xs text-neutral-500">{t.step2Sub}</p>
+            <p className="text-xs text-neutral-500">Ambil key dari menu Settings &rarr; API Keys</p>
+          </div>
+
+          <div className="p-4 border border-neutral-800 rounded-lg bg-neutral-950 space-y-3">
+            <div className="flex items-center gap-2 text-white font-medium text-xs">
+              <span className="w-5 h-5 rounded-full bg-neutral-900 border border-neutral-700 flex items-center justify-center font-mono text-[11px]">
+                3
+              </span>
+              Cek Endpoint API
+            </div>
+            <p className="text-xs text-neutral-400 leading-relaxed">
+              Secara default sudah otomatis ke cloud. Jika ingin ubah:
+            </p>
+            <div className="p-2.5 bg-black border border-neutral-800 rounded font-mono text-xs text-neutral-300">
+              DevTime: Set API URL
+            </div>
+            <p className="text-xs text-neutral-500 font-mono text-[10px]">https://wakatime-devtime.vercel.app</p>
           </div>
         </div>
       </div>

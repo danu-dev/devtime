@@ -12,12 +12,13 @@ export interface ExtensionRelease {
 
 const RELEASES: ExtensionRelease[] = [
   {
-    version: "v0.1.0",
+    version: "v0.1.1",
     releaseDate: "2026-09-03",
-    fileName: "devtime-vscode-0.1.0.vsix",
-    downloadUrl: "/downloads/devtime-vscode-0.1.0.vsix",
+    fileName: "devtime-vscode-0.1.1.vsix",
+    downloadUrl: "/downloads/devtime-vscode-0.1.1.vsix",
     changelog: [
-      "Initial stable release",
+      "Auto-migration setting apiUrl localhost ke production endpoint Vercel",
+      "Default cloud endpoint: https://wakatime-devtime.vercel.app",
       "Real-time keystroke and active file heartbeat tracker",
       "Automatic framework detection (Next.js, React, Express, Vue, Angular)",
       "Smart branch detection and heartbeat deduplication",
@@ -37,7 +38,7 @@ export async function GET() {
       "Download file extension (.vsix) dari website DevTime.",
       "Buka Visual Studio Code.",
       "Tekan Ctrl+Shift+P (atau Cmd+Shift+P di Mac), ketik 'Extensions: Install from VSIX...'.",
-      "Pilih file devtime-vscode-0.1.0.vsix yang baru diunduh.",
+      "Pilih file devtime-vscode-0.1.1.vsix yang baru diunduh.",
       "Buat API Key di menu Dashboard DevTime -> Settings -> API Keys.",
       "Di VS Code, tekan Ctrl+Shift+P, ketik 'DevTime: Set API Key' dan paste API key Anda.",
       "Mulai coding, data aktivitas Anda otomatis tercatat secara real-time!",

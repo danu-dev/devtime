@@ -9,7 +9,11 @@ export class DevTimeClient {
 
     const config = vscode.workspace.getConfiguration("devtime");
     const apiKey = config.get<string>("apiKey")?.trim();
-    const apiUrl = (config.get<string>("apiUrl") || "https://wakatime-devtime.vercel.app").trim().replace(/\/+$/, "");
+    let apiUrl = config.get<string>("apiUrl");
+    if (!apiUrl || apiUrl.includes("localhost:3000")) {
+      apiUrl = "https://wakatime-devtime.vercel.app";
+    }
+    apiUrl = apiUrl.trim().replace(/\/+$/, "");
 
     if (!apiKey) {
       statusBar.text = "$(stop) DevTime: No Key";
