@@ -42,7 +42,7 @@
       "properties": {
         "devtime.apiUrl": {
           "type": "string",
-          "default": "http://localhost:3000",
+          "default": "https://wakatime-devtime.vercel.app",
           "description": "DevTime API URL"
         },
         "devtime.enabled": {
