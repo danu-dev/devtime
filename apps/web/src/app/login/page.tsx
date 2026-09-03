@@ -30,7 +30,7 @@ export default function AuthPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        router.push("/overview");
+        window.location.href = "/overview";
       } else {
         setError(data.error || t.authFailed);
       }
