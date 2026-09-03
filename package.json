@@ -1,0 +1,17 @@
+{
+  "name": "devtime",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace=@devtime/web run dev",
+    "build": "npm --workspace=@devtime/web run build",
+    "lint": "npm --workspace=@devtime/web run lint",
+    "test": "npm --workspace=@devtime/shared run test",
+    "db:generate": "npm --workspace=@devtime/web exec prisma generate",
+    "db:migrate": "npm --workspace=@devtime/web exec prisma migrate dev",
+    "db:seed": "npm --workspace=@devtime/web exec prisma db seed"
+  }
+}

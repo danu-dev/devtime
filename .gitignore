@@ -1,0 +1,47 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing & Coverage
+coverage
+.nyc_output
+
+# Next.js Build Outputs
+.next/
+out/
+build/
+dist/
+
+# Environment Variables & Secrets
+.env
+.env*.local
+.env.production
+.env.development
+
+# SQLite Database & Prisma generated files
+*.db
+*.db-journal
+apps/web/prisma/*.db
+apps/web/prisma/*.db-journal
+
+# VS Code / IDE files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS Files
+.DS_Store
+*.pem
+Thumbs.db
+
+# Vercel
+.vercel

@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id           String      @id @default(cuid())
+  email        String      @unique
+  passwordHash String
+  name         String?
+  apiKeys      ApiKey[]
+  heartbeats   Heartbeat[]
+  dailyStats   DailyStat[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  keyHash    String    @unique
+  rawKey     String?
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  revokedAt  DateTime?
+
+  @@index([userId])
+}
+
+model Heartbeat {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entity          String
+  project         String?
+  language        String?
+  framework       String?
+  editor          String?
+  branch          String?
+  operatingSystem String?
+  machine         String?
+  isWrite         Boolean  @default(false)
+  activityAt      DateTime
+  createdAt       DateTime @default(now())
+
+  @@index([userId, activityAt])
+  @@index([userId, project, activityAt])
+  @@index([userId, language, activityAt])
+}
+
+model DailyStat {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  date         DateTime
+  project      String?
+  language     String?
+  totalSeconds Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, date, project, language])
+  @@index([userId, date])
+}

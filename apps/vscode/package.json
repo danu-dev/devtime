@@ -1,0 +1,79 @@
+{
+  "name": "devtime-vscode",
+  "displayName": "DevTime",
+  "description": "Open source coding activity tracker",
+  "version": "0.1.0",
+  "publisher": "devtime",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "devtime.showStatus",
+        "title": "DevTime: Show Status & Actions"
+      },
+      {
+        "command": "devtime.setApiKey",
+        "title": "DevTime: Set API Key"
+      },
+      {
+        "command": "devtime.setApiUrl",
+        "title": "DevTime: Set API URL"
+      },
+      {
+        "command": "devtime.sendTestHeartbeat",
+        "title": "DevTime: Send Test Heartbeat"
+      },
+      {
+        "command": "devtime.toggleTracking",
+        "title": "DevTime: Toggle Tracking (Enable/Disable)"
+      }
+    ],
+    "configuration": {
+      "title": "DevTime",
+      "properties": {
+        "devtime.apiUrl": {
+          "type": "string",
+          "default": "http://localhost:3000",
+          "description": "DevTime API URL"
+        },
+        "devtime.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable tracking"
+        },
+        "devtime.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "DevTime API Key"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "test": "echo 'No tests yet'"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.130",
+    "@types/vscode": "^1.80.0",
+    "ts-loader": "^9.x",
+    "typescript": "^5.x",
+    "webpack": "^5.x",
+    "webpack-cli": "^5.x"
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
+  }
+}
