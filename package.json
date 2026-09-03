@@ -8,7 +8,8 @@
   "scripts": {
     "dev": "npm --workspace=@devtime/web run dev",
     "build": "npm --workspace=@devtime/web run build",
-    "vercel-build": "npm --workspace=@devtime/web exec prisma generate && npm --workspace=@devtime/web run build",
+    "build:vscode": "cd apps/vscode && npx @vscode/vsce package --no-dependencies -o ../web/public/downloads/devtime-vscode-0.1.0.vsix",
+    "vercel-build": "npm run build:vscode && npm --workspace=@devtime/web exec prisma generate && npm --workspace=@devtime/web run build",
     "lint": "npm --workspace=@devtime/web run lint",
     "test": "npm --workspace=@devtime/shared run test",
     "db:generate": "npm --workspace=@devtime/web exec prisma generate",
