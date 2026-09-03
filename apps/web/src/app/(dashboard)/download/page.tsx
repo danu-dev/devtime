@@ -6,10 +6,11 @@ import { useLanguage } from "@/lib/LanguageContext";
 const RELEASES = [
   {
     version: "v0.1.2",
-    name: "DevTime VS Code Extension 0.1.2 (Latest & Fixed)",
+    name: "DevTime VS Code Extension 0.1.2 (Latest Cloud Edition)",
     date: "Sep 2026",
     fileName: "devtime-vscode-0.1.2.vsix",
     downloadUrl: "/downloads/devtime-vscode-0.1.2.vsix",
+    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
     isLatest: true,
     size: "70 KB",
     changes: [
@@ -19,6 +20,34 @@ const RELEASES = [
       "Pelacakan heartbeat coding otomatis berbasis keystroke & buffer focus",
       "Auto-detect framework (Next.js, Vite, React, Vue, Express, Nest, Prisma)",
       "Offline sync queue (data tetap tersimpan jika internet offline)",
+    ],
+  },
+  {
+    version: "v0.1.1",
+    name: "DevTime VS Code Extension 0.1.1",
+    date: "Sep 2026",
+    fileName: "devtime-vscode-0.1.1.vsix",
+    downloadUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    isLatest: false,
+    size: "70 KB",
+    changes: [
+      "Perubahan setting default apiUrl ke cloud",
+      "Peningkatan stabilitas koneksi Axios client",
+    ],
+  },
+  {
+    version: "v0.1.0",
+    name: "DevTime VS Code Extension 0.1.0 (Initial Beta)",
+    date: "Agu 2026",
+    fileName: "devtime-vscode-0.1.0.vsix",
+    downloadUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    githubReleaseUrl: "https://github.com/danu-dev/devtime/releases/tag/v0.1.2",
+    isLatest: false,
+    size: "35 KB",
+    changes: [
+      "Rilis perdana pelacakan heartbeat di VS Code",
+      "Dukungan offline queue storage lokal",
     ],
   },
 ];
@@ -74,11 +103,20 @@ export default function DownloadPage() {
               <div className="flex items-center gap-2">
                 <a
                   href={rel.downloadUrl}
-                  download
+                  download={rel.isLatest}
                   className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-neutral-200 text-black text-xs font-semibold rounded transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Download VSIX ({rel.size})
+                </a>
+                <a
+                  href={rel.githubReleaseUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 border border-neutral-800 hover:border-neutral-700 bg-neutral-900 text-neutral-400 hover:text-white rounded transition-colors"
+                  title="View on GitHub Release"
+                >
+                  <Github className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
@@ -169,7 +207,7 @@ export default function DownloadPage() {
         </div>
 
         <a
-          href="https://github.com/danu/devtime"
+          href="https://github.com/danu-dev/devtime"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-2 px-3.5 py-2 bg-neutral-900 hover:bg-neutral-800 text-white border border-neutral-800 rounded text-xs font-medium transition-colors shrink-0"
